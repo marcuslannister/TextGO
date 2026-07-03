@@ -1,0 +1,12 @@
+{
+  "name": "TextGO",
+  "identifier": "top.xylitol.textgo.clip-extensions.snipdo",
+  "icon": "icon.png",
+  "actions": [
+    {
+      "title": "TextGO",
+      "icon": "icon.png",
+      "powershellFile": "textgo.ps1"
+    }
+  ]
+}

@@ -83,3 +83,15 @@ jobs:
           releaseDraft: true
           prerelease: false
           args: ${{ matrix.args }}
+
+      # tauri-action only uploads Tauri bundles, so attach the SnipDo clip
+      # extension (.pbar is a zip of the package contents) separately.
+      - name: package and upload SnipDo clip extension
+        if: matrix.platform == 'windows-latest'
+        shell: pwsh
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          Compress-Archive -Path clip-extensions/snipdo/* -DestinationPath TextGO-snipdo.zip -Force
+          Rename-Item TextGO-snipdo.zip TextGO.pbar
+          gh release upload ${{ github.ref_name }} TextGO.pbar --clobber

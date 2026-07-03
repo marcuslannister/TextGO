@@ -1,3 +1,4 @@
+mod clip;
 mod clipboard;
 mod executor;
 mod identifier;
@@ -10,6 +11,7 @@ mod typer;
 mod window;
 
 // re-export all command functions
+pub use clip::*;
 pub use clipboard::*;
 pub use executor::*;
 pub use identifier::*;

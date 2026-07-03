@@ -24,6 +24,14 @@ export const SHIFT_CLICK_SHORTCUT = 'Shift+MouseClick';
 export const LONG_PRESS_SHORTCUT = 'LongPress';
 
 /**
+ * Clip extension ingest pseudo-shortcut.
+ *
+ * Triggered when a third-party clip tool (SnipDo/PopClip) pushes selected
+ * text into TextGO. Not an OS accelerator — see `isPseudoShortcut`.
+ */
+export const CLIP_SHORTCUT = 'ClipExtension';
+
+/**
  * Classification model prefix.
  */
 export const MODEL_MARK = 'model-';

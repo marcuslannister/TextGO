@@ -5,7 +5,7 @@ import { invoke } from '@tauri-apps/api/core';
 import { listen } from '@tauri-apps/api/event';
 import { getCurrentWindow } from '@tauri-apps/api/window';
 import { LONG_PRESS_SHORTCUT } from './constants';
-import { isMouseShortcut } from './helpers';
+import { isMouseShortcut, isPseudoShortcut } from './helpers';
 
 /**
  * Update case ID in rules with given prefix.
@@ -146,7 +146,7 @@ export class Manager {
   async register(rule: Rule): Promise<void> {
     try {
       const shortcut = rule.shortcut;
-      if (!isMouseShortcut(shortcut)) {
+      if (!isPseudoShortcut(shortcut)) {
         // check if backend shortcut is registered
         const isRegistered = await invoke('is_shortcut_registered', { shortcut });
         if (!isRegistered) {
@@ -181,7 +181,7 @@ export class Manager {
           s.rules.splice(index, 1);
         }
         // unregister backend shortcut when no remaining rules
-        if (!isMouseShortcut(shortcut) && s.rules.length === 0) {
+        if (!isPseudoShortcut(shortcut) && s.rules.length === 0) {
           await invoke('unregister_shortcut', { shortcut });
         }
       }

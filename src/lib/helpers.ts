@@ -1,4 +1,4 @@
-import { DBCLICK_SHORTCUT, DRAG_SHORTCUT, SHIFT_CLICK_SHORTCUT } from '$lib/constants';
+import { CLIP_SHORTCUT, DBCLICK_SHORTCUT, DRAG_SHORTCUT, SHIFT_CLICK_SHORTCUT } from '$lib/constants';
 import { m } from '$lib/paraglide/messages';
 import { getLocale, locales } from '$lib/paraglide/runtime';
 import { invoke } from '@tauri-apps/api/core';
@@ -78,6 +78,20 @@ export function isMouseShortcut(shortcut: string): boolean {
 }
 
 /**
+ * Check if the shortcut is a pseudo-shortcut (not an OS accelerator).
+ *
+ * Pseudo-shortcuts (mouse triggers and clip ingest) must NOT be passed to the
+ * global-shortcut registrar, which would try to parse them as key accelerators
+ * and reject them.
+ *
+ * @param shortcut - shortcut string
+ * @returns true if pseudo-shortcut, false otherwise
+ */
+export function isPseudoShortcut(shortcut: string): boolean {
+  return isMouseShortcut(shortcut) || shortcut === CLIP_SHORTCUT;
+}
+
+/**
  * Format shortcut string.
  *
  * @param shortcut - shortcut string (e.g., "Meta+Shift+KeyA")
@@ -90,6 +104,8 @@ export function formatShortcut(shortcut: string): string {
     return m.mouse_dbclick();
   } else if (shortcut === SHIFT_CLICK_SHORTCUT) {
     return m.mouse_shift_click();
+  } else if (shortcut === CLIP_SHORTCUT) {
+    return m.clip_extension();
   }
   return shortcut
     .split('+')

@@ -1,3 +1,4 @@
+pub mod clip;
 mod keyboard;
 mod mouse;
 

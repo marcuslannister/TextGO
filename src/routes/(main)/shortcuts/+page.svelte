@@ -9,7 +9,7 @@
   import Recorder from '$lib/components/Recorder.svelte';
   import Shortcut from '$lib/components/Shortcut.svelte';
   import Toggle from '$lib/components/Toggle.svelte';
-  import { DBCLICK_SHORTCUT, DRAG_SHORTCUT, SHIFT_CLICK_SHORTCUT } from '$lib/constants';
+  import { CLIP_SHORTCUT, DBCLICK_SHORTCUT, DRAG_SHORTCUT, SHIFT_CLICK_SHORTCUT } from '$lib/constants';
   import { formatShortcut, isMouseShortcut } from '$lib/helpers';
   import { NoData } from '$lib/icons';
   import { m } from '$lib/paraglide/messages';
@@ -25,6 +25,7 @@
   import GearSixIcon from 'phosphor-svelte/lib/GearSixIcon';
   import KeyboardIcon from 'phosphor-svelte/lib/KeyboardIcon';
   import MouseLeftClickIcon from 'phosphor-svelte/lib/MouseLeftClickIcon';
+  import PlugsConnectedIcon from 'phosphor-svelte/lib/PlugsConnectedIcon';
   import ProhibitIcon from 'phosphor-svelte/lib/ProhibitIcon';
   import ProhibitInsetIcon from 'phosphor-svelte/lib/ProhibitInsetIcon';
   import SparkleIcon from 'phosphor-svelte/lib/SparkleIcon';
@@ -32,8 +33,12 @@
   import TrashIcon from 'phosphor-svelte/lib/TrashIcon';
   import WarningIcon from 'phosphor-svelte/lib/WarningIcon';
   import WaveSineIcon from 'phosphor-svelte/lib/WaveSineIcon';
+  import { type } from '@tauri-apps/plugin-os';
   import { onMount, tick } from 'svelte';
   import { fly } from 'svelte/transition';
+
+  // clip extension ingest is Windows-only for now (macOS parity is a later phase)
+  const isWindows = type() === 'windows';
 
   // shortcut recorder
   let recorder: Recorder;
@@ -94,6 +99,8 @@
     if (b === DBCLICK_SHORTCUT) return 1;
     if (a === SHIFT_CLICK_SHORTCUT) return -1;
     if (b === SHIFT_CLICK_SHORTCUT) return 1;
+    if (a === CLIP_SHORTCUT) return -1;
+    if (b === CLIP_SHORTCUT) return 1;
     return a.localeCompare(b);
   }
 
@@ -106,6 +113,7 @@
     if (shortcut === DRAG_SHORTCUT) return m.mouse_drag_hint();
     if (shortcut === DBCLICK_SHORTCUT) return m.mouse_dbclick_hint();
     if (shortcut === SHIFT_CLICK_SHORTCUT) return m.mouse_shift_click_hint();
+    if (shortcut === CLIP_SHORTCUT) return m.clip_extension_hint();
     return m.keyboard_shortcut_hint();
   }
 
@@ -151,7 +159,8 @@
           if (
             shortcuts.current[DRAG_SHORTCUT] &&
             shortcuts.current[DBCLICK_SHORTCUT] &&
-            shortcuts.current[SHIFT_CLICK_SHORTCUT]
+            shortcuts.current[SHIFT_CLICK_SHORTCUT] &&
+            (!isWindows || shortcuts.current[CLIP_SHORTCUT])
           ) {
             // all mouse shortcuts are registered, open recorder directly
             event.preventDefault();
@@ -208,6 +217,19 @@
               <MouseLeftClickIcon class="size-4" />
             </span>
             <span class="mx-auto tracking-wider">{m.mouse_shift_click()}</span>
+          </button>
+        </li>
+        <!-- clip extension option (Windows only for now) -->
+        <li class={!isWindows || shortcuts.current[CLIP_SHORTCUT] ? 'hidden' : ''}>
+          <button
+            class="btn px-1 btn-sm"
+            onclick={() => {
+              register(CLIP_SHORTCUT);
+              dropdownOpen = false;
+            }}
+          >
+            <PlugsConnectedIcon class="mx-1.75 size-4.5" />
+            <span class="mx-auto tracking-wider">{m.clip_extension()}</span>
           </button>
         </li>
         <!-- keyboard shortcut option -->

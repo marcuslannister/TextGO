@@ -219,6 +219,13 @@ export const iBeamCursor = persisted<boolean>('iBeamCursor', true, {
   }
 });
 
+// whether to enable clip-extension ingest (SnipDo/PopClip → TextGO)
+export const clipExtensionEnabled = persisted<boolean>('clipExtensionEnabled', false, {
+  onchange: (enabled) => {
+    invoke('set_clip_extension_enabled', { enabled });
+  }
+});
+
 // shortcut trigger records
 export const entries = persisted<Entry[]>('entries', []);
 

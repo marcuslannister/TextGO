@@ -7,7 +7,15 @@
   import { setupTray } from '$lib/helpers';
   import { m } from '$lib/paraglide/messages';
   import { getLocale, setLocale, type Locale } from '$lib/paraglide/runtime';
-  import { accessibility, autoStart, autoUpdate, historySize, minimizeToTray, theme } from '$lib/stores.svelte';
+  import {
+    accessibility,
+    autoStart,
+    autoUpdate,
+    clipExtensionEnabled,
+    historySize,
+    minimizeToTray,
+    theme
+  } from '$lib/stores.svelte';
   import { invoke } from '@tauri-apps/api/core';
   import { disable, enable, isEnabled } from '@tauri-apps/plugin-autostart';
   import { type } from '@tauri-apps/plugin-os';
@@ -139,5 +147,12 @@
       <Label>{m.minimize_to_tray()}</Label>
       <Toggle bind:value={minimizeToTray.current} />
     </fieldset>
+    {#if osType === 'windows'}
+      <div class="divider my-0 opacity-60"></div>
+      <fieldset class="flex items-center justify-between gap-1">
+        <Label tip={m.clip_extension_explain()} tipPlacement="duplex">{m.clip_extension_enabled()}</Label>
+        <Toggle bind:value={clipExtensionEnabled.current} />
+      </fieldset>
+    {/if}
   </Setting>
 </div>

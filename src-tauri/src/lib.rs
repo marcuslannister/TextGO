@@ -175,6 +175,7 @@ pub fn run() {
             set_long_press_enabled,
             set_long_press_duration,
             set_ibeam_cursor_enabled,
+            set_clip_extension_enabled,
             get_selection,
             get_clipboard_text,
             set_clipboard_text,
@@ -338,6 +339,14 @@ fn setup_app(app: &mut App) -> Result<(), Box<dyn std::error::Error>> {
             });
         }),
     );
+
+    // start clip-extension ingest listener if enabled in settings
+    if let Ok(store) = app.store(SETTINGS_STORE) {
+        let enabled = store.get("clipExtensionEnabled").and_then(|v| v.as_bool());
+        if enabled.unwrap_or(false) {
+            handlers::clip::start(app_handle.clone());
+        }
+    }
 
     // listen for deep link URLs
     app.deep_link().on_open_url(move |event| {
