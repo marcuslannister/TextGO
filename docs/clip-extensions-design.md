@@ -305,11 +305,11 @@ does, Phase 1 still works end-to-end. Each phase leaves the app in a usable stat
   text to TextGO while this is on" warning.
 - i18n: add keys to `messages/{en,zh-CN}.json` (both locales).
 
-**Package (`clip-extensions/snipdo/` in the TextGO repo)**
+**Package (`clip-extensions/nextai-translator/` in the TextGO repo)**
 
-- `textgo.json`, `textgo.ps1` (.NET `NamedPipeClientStream '.','textgo','Out'` → write the
-  selection → flush → close), `icon.png`. Identifier
-  `top.xylitol.textgo.clip-extensions.snipdo`.
+- `textgo.json`, `textgo.ps1` (`$selection` → UTF-8 POST to NextAI Translator's
+  local listener at `http://127.0.0.1:62007/`), `icon.png`. Identifier
+  `top.xylitol.textgo.clip-extensions.nextai-translator`.
 - **Confirm when authoring:** SnipDo's exact text-passing mechanism (env var vs stdin vs a
   `{text}` placeholder in the `.pbar` config). The transport is agnostic to it.
 
@@ -317,7 +317,7 @@ does, Phase 1 still works end-to-end. Each phase leaves the app in a usable stat
 
 - **[REQUIRED]** `.github/workflows/release.yml` today runs ONLY `tauri-apps/tauri-action@v0`
   (`release.yml:74`), which uploads Tauri bundles, not arbitrary zips. Add an explicit step to
-  zip the SnipDo package into `.pbar` and attach it (`gh release upload`, or
+  zip the NextAI Translator package into `.pbar` and attach it (`gh release upload`, or
   `softprops/action-gh-release` with `files:`). "Mirror nextai's `release.yaml`" is not enough
   on its own. The updater already targets `github.com/C5H12O5/TextGO/releases`.
 

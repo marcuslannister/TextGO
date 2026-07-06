@@ -84,14 +84,14 @@ jobs:
           prerelease: false
           args: ${{ matrix.args }}
 
-      # tauri-action only uploads Tauri bundles, so attach the SnipDo clip
+      # tauri-action only uploads Tauri bundles, so attach the NextAI Translator clip
       # extension (.pbar is a zip of the package contents) separately.
-      - name: package and upload SnipDo clip extension
+      - name: package and upload NextAI Translator clip extension
         if: matrix.platform == 'windows-latest'
         shell: pwsh
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          Compress-Archive -Path clip-extensions/snipdo/* -DestinationPath TextGO-snipdo.zip -Force
-          Rename-Item TextGO-snipdo.zip TextGO.pbar
-          gh release upload ${{ github.ref_name }} TextGO.pbar --clobber
+          Compress-Archive -Path clip-extensions/nextai-translator/* -DestinationPath nextai-translator.zip -Force
+          Rename-Item nextai-translator.zip nextai-translator.pbar
+          gh release upload ${{ github.ref_name }} nextai-translator.pbar --clobber

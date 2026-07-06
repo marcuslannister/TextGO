@@ -1,0 +1,12 @@
+{
+  "name": "NextAI Translator",
+  "identifier": "top.xylitol.textgo.clip-extensions.nextai-translator",
+  "icon": "icon.png",
+  "actions": [
+    {
+      "title": "NextAI Translator",
+      "icon": "icon.png",
+      "powershellFile": "textgo.ps1"
+    }
+  ]
+}

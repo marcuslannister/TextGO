@@ -8,7 +8,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 ### Added
 
-- Clip extension ingest (Windows): a third-party clip tool (SnipDo) can push selected text into TextGO through an off-by-default, owner-only named-pipe listener, routed through the existing match/execute pipeline as a new `ClipExtension` trigger; ships an installable SnipDo package (`TextGO.pbar`). See [CLIP-EXTENSIONS.md](CLIP-EXTENSIONS.md).
+- NextAI Translator bridge (Windows): ships `clip-extensions/nextai-translator` with a PowerShell script that forwards TextGO's `$selection` to NextAI Translator's local listener; release artifact is `nextai-translator.pbar`. See [CLIP-EXTENSIONS.md](CLIP-EXTENSIONS.md).
 
 ## [0.10.1]
 
